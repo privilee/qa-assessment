@@ -1,0 +1,509 @@
+{
+	"info": {
+		"_postman_id": "8c42133e-227f-406c-92f8-7f233f4ed34d",
+		"name": "DummyCollections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8812452"
+	},
+	"item": [
+		{
+			"name": "https://dummyapi.online/api/movies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"pm.test(\"Response is an array\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('array');",
+							"});",
+							"pm.test(\"Movies list is not empty\", function () {",
+							"    let movies = pm.response.json();",
+							"    pm.expect(movies.length).to.be.above(0);",
+							"});",
+							"pm.test(\"Each movie object contains correct fields\", function () {",
+							"    pm.response.json().forEach(movie => {",
+							"        pm.expect(movie).to.have.property('id');",
+							"        pm.expect(movie).to.have.property('movie');",
+							"        pm.expect(movie).to.have.property('rating');",
+							"        pm.expect(movie).to.have.property('image');",
+							"        pm.expect(movie).to.have.property('imdb_url');",
+							"    });",
+							"});",
+							"pm.test(\"Each movie object has valid data types and non-null values\", function () {",
+							"    pm.response.json().forEach(movie => {",
+							"        pm.expect(movie.id).to.be.a('number');",
+							"        pm.expect(movie.movie).to.be.a('string').that.is.not.empty;",
+							"        pm.expect(movie.rating).to.be.a('number').that.is.within(0, 10);",
+							"        pm.expect(movie.image).to.be.a('string').that.is.not.empty;",
+							"        pm.expect(movie.imdb_url).to.be.a('string').that.contains('https://www.imdb.com/title/');",
+							"    });",
+							"});",
+							"pm.test(\"Specific movies have correct data\", function () {",
+							"    const movies = pm.response.json();",
+							"    const specificMovie = movies.find(movie => movie.movie === \"The Shawshank Redemption\");",
+							"    pm.expect(specificMovie).to.have.property('id', 1);",
+							"    pm.expect(specificMovie).to.have.property('rating', 9.2);",
+							"    pm.expect(specificMovie).to.have.property('image', 'images/shawshank.jpg');",
+							"    pm.expect(specificMovie).to.have.property('imdb_url', 'https://www.imdb.com/title/tt0111161/');",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyapi.online/api/movies",
+					"protocol": "https",
+					"host": [
+						"dummyapi",
+						"online"
+					],
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://dummyapi.online/api/blogposts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"pm.test(\"Each blog post has the correct structure\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    jsonData.forEach(function(post) {",
+							"        pm.expect(post).to.have.property('id');",
+							"        pm.expect(post).to.have.property('title');",
+							"        pm.expect(post).to.have.property('author');",
+							"        pm.expect(post).to.have.property('date_published');",
+							"        pm.expect(post).to.have.property('content');",
+							"    });",
+							"});",
+							"pm.test(\"Each field has the correct data type\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    jsonData.forEach(function(post) {",
+							"        pm.expect(post.id).to.be.a('number');",
+							"        pm.expect(post.title).to.be.a('string');",
+							"        pm.expect(post.author).to.be.a('string');",
+							"        pm.expect(post.date_published).to.be.a('string'); ",
+							"        pm.expect(post.content).to.be.a('string');",
+							"    });",
+							"});",
+							"pm.test(\"Number of blog posts is correct\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.length).to.eql(50); ",
+							"});",
+							"pm.test(\"Verify specific blog post details\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    let post = jsonData.find(p => p.id === 1);",
+							"    pm.expect(post.title).to.eql(\"How to Build a Successful Blog\");",
+							"    pm.expect(post.author).to.eql(\"Tim Burton\");",
+							"    pm.expect(post.date_published).to.eql(\"2022-01-19\");",
+							"    pm.expect(post.content).to.include(\"Building a successful blog takes time, effort, and dedication.\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyapi.online/api/blogposts",
+					"protocol": "https",
+					"host": [
+						"dummyapi",
+						"online"
+					],
+					"path": [
+						"api",
+						"blogposts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://dummyapi.online/api/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"pm.test(\"Response is an array\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('array');",
+							"});",
+							"",
+							"pm.test(\"Each user object contains expected fields\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(user => {",
+							"        pm.expect(user).to.have.property('id');",
+							"        pm.expect(user).to.have.property('name');",
+							"        pm.expect(user).to.have.property('username');",
+							"        pm.expect(user).to.have.property('email');",
+							"        pm.expect(user).to.have.property('address');",
+							"        pm.expect(user.address).to.have.property('street');",
+							"        pm.expect(user.address).to.have.property('city');",
+							"        pm.expect(user.address).to.have.property('state');",
+							"        pm.expect(user.address).to.have.property('zipcode');",
+							"    });",
+							"});",
+							"pm.test(\"ID field is a positive integer\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(user => {",
+							"        pm.expect(user.id).to.be.a('number');",
+							"        pm.expect(user.id).to.be.above(0);",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Name, username, and email fields are non-empty strings\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(user => {",
+							"        pm.expect(user.name).to.be.a('string').and.to.not.be.empty;",
+							"        pm.expect(user.username).to.be.a('string').and.to.not.be.empty;",
+							"        pm.expect(user.email).to.be.a('string').and.to.not.be.empty;",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Email field is in valid format\", function () {",
+							"    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(user => {",
+							"        pm.expect(user.email).to.match(emailRegex);",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Address fields are non-empty strings\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(user => {",
+							"        pm.expect(user.address.street).to.be.a('string').and.to.not.be.empty;",
+							"        pm.expect(user.address.city).to.be.a('string').and.to.not.be.empty;",
+							"        pm.expect(user.address.state).to.be.a('string').and.to.not.be.empty;",
+							"        pm.expect(user.address.zipcode).to.be.a('string').and.to.not.be.empty;",
+							"    });",
+							"});",
+							"pm.test(\"No duplicate ID values\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const ids = jsonData.map(user => user.id);",
+							"    const uniqueIds = new Set(ids);",
+							"    pm.expect(ids.length).to.equal(uniqueIds.size);",
+							"});",
+							"",
+							"pm.test(\"No duplicate username values\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const usernames = jsonData.map(user => user.username);",
+							"    const uniqueUsernames = new Set(usernames);",
+							"    pm.expect(usernames.length).to.equal(uniqueUsernames.size);",
+							"});",
+							"",
+							"pm.test(\"No duplicate email values\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const emails = jsonData.map(user => user.email);",
+							"    const uniqueEmails = new Set(emails);",
+							"    pm.expect(emails.length).to.equal(uniqueEmails.size);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyapi.online/api/users",
+					"protocol": "https",
+					"host": [
+						"dummyapi",
+						"online"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://dummyapi.online/api/pokemon",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+							"});",
+							"const schema = {",
+							"    \"type\": \"array\",",
+							"    \"items\": {",
+							"        \"type\": \"object\",",
+							"        \"required\": [\"id\", \"pokemon\", \"type\", \"abilities\", \"hitpoints\", \"evolutions\", \"location\", \"image_url\"],",
+							"        \"properties\": {",
+							"            \"id\": {",
+							"                \"type\": \"integer\"",
+							"            },",
+							"            \"pokemon\": {",
+							"                \"type\": \"string\"",
+							"            },",
+							"            \"type\": {",
+							"                \"type\": \"string\"",
+							"            },",
+							"            \"abilities\": {",
+							"                \"type\": \"array\",",
+							"                \"items\": {",
+							"                    \"type\": \"string\"",
+							"                }",
+							"            },",
+							"            \"hitpoints\": {",
+							"                \"type\": \"integer\"",
+							"            },",
+							"            \"evolutions\": {",
+							"                \"type\": \"array\",",
+							"                \"items\": {",
+							"                    \"type\": \"string\"",
+							"                }",
+							"            },",
+							"            \"location\": {",
+							"                \"type\": \"string\"",
+							"            },",
+							"            \"image_url\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"uri\"",
+							"            }",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.test(\"Validate Response Schema\", function () {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"pm.test(\"Validate Specific Pokemon Data\", function () {",
+							"    const data = pm.response.json();",
+							"    const bulbasaur = data.find(pokemon => pokemon.pokemon === \"Bulbasaur\");",
+							"",
+							"    pm.expect(bulbasaur).to.exist;",
+							"    pm.expect(bulbasaur.type).to.eql(\"Grass\");",
+							"    pm.expect(bulbasaur.abilities).to.include(\"Overgrow\");",
+							"    pm.expect(bulbasaur.hitpoints).to.eql(45);",
+							"});",
+							"pm.test(\"Check for Duplicate Pokemon IDs\", function () {",
+							"    const data = pm.response.json();",
+							"    const ids = data.map(pokemon => pokemon.id);",
+							"    const uniqueIds = [...new Set(ids)];",
+							"",
+							"    pm.expect(ids.length).to.eql(uniqueIds.length);",
+							"});",
+							"pm.test(\"Validate Pokemon Count\", function () {",
+							"    const data = pm.response.json();",
+							"    pm.expect(data.length).to.eql(50);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyapi.online/api/pokemon",
+					"protocol": "https",
+					"host": [
+						"dummyapi",
+						"online"
+					],
+					"path": [
+						"api",
+						"pokemon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://dummyapi.online/api/products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"pm.test(\"Response structure is correct\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(product => {",
+							"        pm.expect(product).to.have.property('id');",
+							"        pm.expect(product).to.have.property('productCategory');",
+							"        pm.expect(product).to.have.property('name');",
+							"        pm.expect(product).to.have.property('brand');",
+							"        pm.expect(product).to.have.property('description');",
+							"        pm.expect(product).to.have.property('basePrice');",
+							"        pm.expect(product).to.have.property('inStock');",
+							"        pm.expect(product).to.have.property('stock');",
+							"        pm.expect(product).to.have.property('featuredImage');",
+							"        pm.expect(product).to.have.property('thumbnailImage');",
+							"        pm.expect(product).to.have.property('storageOptions');",
+							"        pm.expect(product).to.have.property('colorOptions');",
+							"        pm.expect(product).to.have.property('display');",
+							"        pm.expect(product).to.have.property('CPU');",
+							"    });",
+							"});",
+							"pm.test(\"Each product contains all required fields\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(product => {",
+							"        pm.expect(product.id).to.be.a('number');",
+							"        pm.expect(product.productCategory).to.be.a('string');",
+							"        pm.expect(product.name).to.be.a('string');",
+							"        pm.expect(product.brand).to.be.a('string');",
+							"        pm.expect(product.description).to.be.a('string');",
+							"        pm.expect(product.basePrice).to.be.a('number');",
+							"        pm.expect(product.inStock).to.be.a('boolean');",
+							"        pm.expect(product.stock).to.be.a('number');",
+							"        pm.expect(product.featuredImage).to.be.a('string');",
+							"        pm.expect(product.thumbnailImage).to.be.a('string');",
+							"        pm.expect(product.storageOptions).to.be.an('array').that.is.not.empty;",
+							"        pm.expect(product.colorOptions).to.be.an('array').that.is.not.empty;",
+							"        pm.expect(product.display).to.be.a('string');",
+							"        pm.expect(product.CPU).to.be.a('string');",
+							"    });",
+							"});",
+							"pm.test(\"Verify specific fields values\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(product => {",
+							"        pm.expect(product.inStock).to.be.a('boolean');",
+							"        pm.expect(product.basePrice).to.be.a('number');",
+							"    });",
+							"});",
+							"pm.test(\"No product has negative stock values\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(product => {",
+							"        pm.expect(product.stock).to.be.at.least(0);",
+							"    });",
+							"});",
+							"pm.test(\"Product category contains expected values\", function () {",
+							"    const expectedCategories = [\"Smartphone\", \"Tablet\", \"Laptop\"];",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(product => {",
+							"        pm.expect(expectedCategories).to.include(product.productCategory);",
+							"    });",
+							"});",
+							"pm.test(\"URL fields are correctly formatted\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const urlRegex = /^(http|https):\\/\\/[^\\s$.?#].[^\\s]*$/;",
+							"    jsonData.forEach(product => {",
+							"        pm.expect(product.featuredImage).to.match(urlRegex);",
+							"        pm.expect(product.thumbnailImage).to.match(urlRegex);",
+							"    });",
+							"});",
+							"pm.test(\"Storage and color options arrays are not empty\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach(product => {",
+							"        pm.expect(product.storageOptions).to.be.an('array').that.is.not.empty;",
+							"        pm.expect(product.colorOptions).to.be.an('array').that.is.not.empty;",
+							"    });",
+							"});",
+							"pm.test(\"Each product has a unique id\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const ids = jsonData.map(product => product.id);",
+							"    const uniqueIds = new Set(ids);",
+							"    pm.expect(ids.length).to.equal(uniqueIds.size);",
+							"});",
+							"pm.test(\"Products of the same category have different names\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const categoryNameMap = {};",
+							"    jsonData.forEach(product => {",
+							"        if (!categoryNameMap[product.productCategory]) {",
+							"            categoryNameMap[product.productCategory] = new Set();",
+							"        }",
+							"        pm.expect(categoryNameMap[product.productCategory]).not.to.include(product.name);",
+							"        categoryNameMap[product.productCategory].add(product.name);",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyapi.online/api/products",
+					"protocol": "https",
+					"host": [
+						"dummyapi",
+						"online"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
